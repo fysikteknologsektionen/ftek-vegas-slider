@@ -1,31 +1,747 @@
-// ----------------------------------------------------------------------------
-// Vegas - Fullscreen Backgrounds and Slideshows with jQuery. 
-// Add awesome fullscreen backgrounds to your webpages.
-// v1.3.5 - released 2013-12-16 13:28
- 
-// Licensed under the MIT license.
+/*!-----------------------------------------------------------------------------
+ * Vegas - Fullscreen Backgrounds and Slideshows.
+ * v2.4.0 - built 2017-01-04
+ * Licensed under the MIT License.
+ * http://vegas.jaysalvat.com/
+ * ----------------------------------------------------------------------------
+ * Copyright (C) 2010-2017 Jay Salvat
+ * http://jaysalvat.com/
+ * --------------------------------------------------------------------------*/
 
-// http://vegas.jaysalvat.com/
-// ----------------------------------------------------------------------------
-// Copyright (C) 2010-2014 Jay Salvat
-// http://jaysalvat.com/
-// ----------------------------------------------------------------------------
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files ( the "Software" ), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-// ----------------------------------------------------------------------------
-(function(e){function d(t,n){var r={align:"center",valign:"center"};e.extend(r,n);if(t.height()===0){t.load(function(){d(e(this),n)});return}var i=y(),s=i.width,o=i.height,u=t.width(),a=t.height(),f=o/s,l=a/u,c,h,p,v,m;if(f>l){c=o/l;h=o}else{c=s;h=s*l}m={width:c+"px",height:h+"px",top:"auto",bottom:"auto",left:"auto",right:"auto"};if(!isNaN(parseInt(r.valign,10))){m.top=0-(h-o)/100*parseInt(r.valign,10)+"px"}else if(r.valign=="top"){m.top=0}else if(r.valign=="bottom"){m.bottom=0}else{m.top=(o-h)/2}if(!isNaN(parseInt(r.align,10))){m.left=0-(c-s)/100*parseInt(r.align,10)+"px"}else if(r.align=="left"){m.left=0}else if(r.align=="right"){m.right=0}else{m.left=(s-c)/2}t.css(m)}function v(){r.prependTo("body").fadeIn()}function m(){r.fadeOut("fast",function(){e(this).remove()})}function g(){if(e("body").css("backgroundImage")){return e("body").css("backgroundImage").replace(/url\("?(.*?)"?\)/i,"$1")}}function y(){var e=window,t="inner";if(!("innerWidth"in window)){e=document.documentElement||document.body;t="client"}return{width:e[t+"Width"],height:c?e[t+"Height"]+h:e[t+"Height"]}}var t=e("<img />").addClass("vegas-background"),n=e("<div />").addClass("vegas-overlay"),r=e("<div />").addClass("vegas-loading"),i=e(),s=null,o=[],u=0,a=5e3,f=function(){},l,c=navigator.userAgent.match(/iPod|iPhone/i),h=76,p={init:function(n){var r={src:g(),align:"center",valign:"center",fade:0,loading:true,load:function(){},complete:function(){}};e.extend(r,e.vegas.defaults.background,n);if(r.loading){v()}var s=t.clone();s.css({position:"fixed",left:"0px",top:"0px"}).bind("load",function(){if(s==i){return}e(window).bind("load resize.vegas",function(e){d(s,r)});if(i.is("img")){i.stop();s.hide().insertAfter(i).fadeIn(r.fade,function(){e(".vegas-background").not(this).remove();e("body").trigger("vegascomplete",[this,u-1]);r.complete.apply(s,[u-1])})}else{s.hide().prependTo("body").fadeIn(r.fade,function(){e("body").trigger("vegascomplete",[this,u-1]);r.complete.apply(this,[u-1])})}i=s;d(i,r);if(r.loading){m()}e("body").trigger("vegasload",[i.get(0),u-1]);r.load.apply(i.get(0),[u-1]);if(u){e("body").trigger("vegaswalk",[i.get(0),u-1]);r.walk.apply(i.get(0),[u-1])}}).attr("src",r.src);return e.vegas},destroy:function(t){if(!t||t=="background"){e(".vegas-background, .vegas-loading").remove();e(window).unbind("*.vegas");i=e()}if(!t||t=="overlay"){e(".vegas-overlay").remove()}clearInterval(l);return e.vegas},overlay:function(t){var r={src:null,opacity:null};e.extend(r,e.vegas.defaults.overlay,t);n.remove();n.css({margin:"0",padding:"0",position:"fixed",left:"0px",top:"0px",width:"100%",height:"100%"});if(r.src===false){n.css("backgroundImage","none")}if(r.src){n.css("backgroundImage","url("+r.src+")")}if(r.opacity){n.css("opacity",r.opacity)}n.prependTo("body");return e.vegas},slideshow:function(t,n){var r={step:u,delay:a,preload:false,loading:true,backgrounds:o,walk:f};e.extend(r,e.vegas.defaults.slideshow,t);if(r.backgrounds!=o){if(!t.step){r.step=0}if(!t.walk){r.walk=function(){}}if(r.preload){e.vegas("preload",r.backgrounds)}}o=r.backgrounds;a=r.delay;u=r.step;f=r.walk;clearInterval(l);if(!o.length){return e.vegas}var c=function(){if(u<0){u=o.length-1}if(u>=o.length||!o[u-1]){u=0}var t=o[u++];t.walk=r.walk;t.loading=r.loading;if(typeof t.fade=="undefined"){t.fade=r.fade}if(t.fade>r.delay){t.fade=r.delay}e.vegas(t)};c();if(!n){s=false;e("body").trigger("vegasstart",[i.get(0),u-1])}if(!s){l=setInterval(c,r.delay)}return e.vegas},next:function(){var t=u;if(u){e.vegas("slideshow",{step:u},true);e("body").trigger("vegasnext",[i.get(0),u-1,t-1])}return e.vegas},previous:function(){var t=u;if(u){e.vegas("slideshow",{step:u-2},true);e("body").trigger("vegasprevious",[i.get(0),u-1,t-1])}return e.vegas},jump:function(t){var n=u;if(u){e.vegas("slideshow",{step:t},true);e("body").trigger("vegasjump",[i.get(0),u-1,n-1])}return e.vegas},stop:function(){var t=u;u=0;s=null;clearInterval(l);e("body").trigger("vegasstop",[i.get(0),t-1]);return e.vegas},pause:function(){s=true;clearInterval(l);e("body").trigger("vegaspause",[i.get(0),u-1]);return e.vegas},get:function(e){if(e===null||e=="background"){return i.get(0)}if(e=="overlay"){return n.get(0)}if(e=="step"){return u-1}if(e=="paused"){return s}},preload:function(t){var n=[];for(var r in t){if(t[r].src){var i=document.createElement("img");i.src=t[r].src;n.push(i)}}return e.vegas}};e.vegas=function(t){if(p[t]){return p[t].apply(this,Array.prototype.slice.call(arguments,1))}else if(typeof t==="object"||!t){return p.init.apply(this,arguments)}else{e.error("Method "+t+" does not exist")}};e.vegas.defaults={background:{},slideshow:{},overlay:{}}})(jQuery)
+(function ($) {
+    'use strict';
+
+    var defaults = {
+        slide:                   0,
+        delay:                   5000,
+        loop:                    true,
+        preload:                 true,
+        preloadImage:            true,
+        preloadVideo:            true,
+        timer:                   true,
+        overlay:                 false,
+        autoplay:                true,
+        shuffle:                 false,
+        cover:                   true,
+        color:                   null,
+        align:                   'center',
+        valign:                  'center',
+        firstTransition:         null,
+        firstTransitionDuration: null,
+        transition:              'fade',
+        transitionDuration:      1000,
+        transitionRegister:      [],
+        animation:               null,
+        animationDuration:       'auto',
+        animationRegister:       [],
+        slidesToKeep:            1,
+        init:  function () {},
+        play:  function () {},
+        pause: function () {},
+        walk:  function () {},
+        slides: [
+            // {
+            //  src:                null,
+            //  color:              null,
+            //  delay:              null,
+            //  align:              null,
+            //  valign:             null,
+            //  transition:         null,
+            //  transitionDuration: null,
+            //  animation:          null,
+            //  animationDuration:  null,
+            //  cover:              true,
+            //  video: {
+            //      src: [],
+            //      mute: true,
+            //      loop: true
+            // }
+            // ...
+        ]
+    };
+
+    var videoCache = {};
+
+    var Vegas = function (elmt, options) {
+        this.elmt         = elmt;
+        this.settings     = $.extend({}, defaults, $.vegas.defaults, options);
+        this.slide        = this.settings.slide;
+        this.total        = this.settings.slides.length;
+        this.noshow       = this.total < 2;
+        this.paused       = !this.settings.autoplay || this.noshow;
+        this.ended        = false;
+        this.$elmt        = $(elmt);
+        this.$timer       = null;
+        this.$overlay     = null;
+        this.$slide       = null;
+        this.timeout      = null;
+        this.first        = true;
+
+        this.transitions = [
+            'fade', 'fade2',
+            'blur', 'blur2',
+            'flash', 'flash2',
+            'negative', 'negative2',
+            'burn', 'burn2',
+            'slideLeft', 'slideLeft2',
+            'slideRight', 'slideRight2',
+            'slideUp', 'slideUp2',
+            'slideDown', 'slideDown2',
+            'zoomIn', 'zoomIn2',
+            'zoomOut', 'zoomOut2',
+            'swirlLeft', 'swirlLeft2',
+            'swirlRight', 'swirlRight2'
+        ];
+
+        this.animations = [
+            'kenburns',
+            'kenburnsLeft', 'kenburnsRight',
+            'kenburnsUp', 'kenburnsUpLeft', 'kenburnsUpRight',
+            'kenburnsDown', 'kenburnsDownLeft', 'kenburnsDownRight'
+        ];
+
+        if (this.settings.transitionRegister instanceof Array === false) {
+            this.settings.transitionRegister = [ this.settings.transitionRegister ];
+        }
+
+        if (this.settings.animationRegister instanceof Array === false) {
+            this.settings.animationRegister = [ this.settings.animationRegister ];
+        }
+
+        this.transitions = this.transitions.concat(this.settings.transitionRegister);
+        this.animations  = this.animations.concat(this.settings.animationRegister);
+
+        this.support = {
+            objectFit:  'objectFit'  in document.body.style,
+            transition: 'transition' in document.body.style || 'WebkitTransition' in document.body.style,
+            video:      $.vegas.isVideoCompatible()
+        };
+
+        if (this.settings.shuffle === true) {
+            this.shuffle();
+        }
+
+        this._init();
+    };
+
+    Vegas.prototype = {
+        _init: function () {
+            var $wrapper,
+                $overlay,
+                $timer,
+                isBody  = this.elmt.tagName === 'BODY',
+                timer   = this.settings.timer,
+                overlay = this.settings.overlay,
+                self    = this;
+
+            // Preloading
+            this._preload();
+
+            // Wrapper with content
+            if (!isBody) {
+                this.$elmt.css('height', this.$elmt.css('height'));
+
+                $wrapper = $('<div class="vegas-wrapper">')
+                    .css('overflow', this.$elmt.css('overflow'))
+                    .css('padding',  this.$elmt.css('padding'));
+
+                // Some browsers don't compute padding shorthand
+                if (!this.$elmt.css('padding')) {
+                    $wrapper
+                        .css('padding-top',    this.$elmt.css('padding-top'))
+                        .css('padding-bottom', this.$elmt.css('padding-bottom'))
+                        .css('padding-left',   this.$elmt.css('padding-left'))
+                        .css('padding-right',  this.$elmt.css('padding-right'));
+                }
+
+                this.$elmt.clone(true).children().appendTo($wrapper);
+                this.elmt.innerHTML = '';
+            }
+
+            // Timer
+            if (timer && this.support.transition) {
+                $timer = $('<div class="vegas-timer"><div class="vegas-timer-progress">');
+                this.$timer = $timer;
+                this.$elmt.prepend($timer);
+            }
+
+            // Overlay
+            if (overlay) {
+                $overlay = $('<div class="vegas-overlay">');
+
+                if (typeof overlay === 'string') {
+                    $overlay.css('background-image', 'url(' + overlay + ')');
+                }
+
+                this.$overlay = $overlay;
+                this.$elmt.prepend($overlay);
+            }
+
+            // Container
+            this.$elmt.addClass('vegas-container');
+
+            if (!isBody) {
+                this.$elmt.append($wrapper);
+            }
+
+            setTimeout(function () {
+                self.trigger('init');
+                self._goto(self.slide);
+
+                if (self.settings.autoplay) {
+                    self.trigger('play');
+                }
+            }, 1);
+        },
+
+        _preload: function () {
+            var img, i;
+
+            for (i = 0; i < this.settings.slides.length; i++) {
+                if (this.settings.preload || this.settings.preloadImages) {
+                    if (this.settings.slides[i].src) {
+                        img = new Image();
+                        img.src = this.settings.slides[i].src;
+                    }
+                }
+
+                if (this.settings.preload || this.settings.preloadVideos) {
+                    if (this.support.video && this.settings.slides[i].video) {
+                        if (this.settings.slides[i].video instanceof Array) {
+                            this._video(this.settings.slides[i].video);
+                        } else {
+                            this._video(this.settings.slides[i].video.src);
+                        }
+                    }
+                }
+            }
+        },
+
+        _random: function (array) {
+            return array[Math.floor(Math.random() * array.length)];
+        },
+
+        _slideShow: function () {
+            var self = this;
+
+            if (this.total > 1 && !this.ended && !this.paused && !this.noshow) {
+                this.timeout = setTimeout(function () {
+                    self.next();
+                }, this._options('delay'));
+            }
+        },
+
+        _timer: function (state) {
+            var self = this;
+
+            clearTimeout(this.timeout);
+
+            if (!this.$timer) {
+                return;
+            }
+
+            this.$timer
+                .removeClass('vegas-timer-running')
+                    .find('div')
+                        .css('transition-duration', '0ms');
+
+            if (this.ended || this.paused || this.noshow) {
+                return;
+            }
+
+            if (state) {
+                setTimeout(function () {
+                   self.$timer
+                    .addClass('vegas-timer-running')
+                        .find('div')
+                            .css('transition-duration', self._options('delay') - 100 + 'ms');
+                }, 100);
+            }
+        },
+
+        _video: function (srcs) {
+            var video,
+                source,
+                cacheKey = srcs.toString();
+
+            if (videoCache[cacheKey]) {
+                return videoCache[cacheKey];
+            }
+
+            if (srcs instanceof Array === false) {
+                srcs = [ srcs ];
+            }
+
+            video = document.createElement('video');
+            video.preload = true;
+
+            srcs.forEach(function (src) {
+                source = document.createElement('source');
+                source.src = src;
+                video.appendChild(source);
+            });
+
+            videoCache[cacheKey] = video;
+
+            return video;
+        },
+
+        _fadeOutSound: function (video, duration) {
+            var self   = this,
+                delay  = duration / 10,
+                volume = video.volume - 0.09;
+
+            if (volume > 0) {
+                video.volume = volume;
+
+                setTimeout(function () {
+                    self._fadeOutSound(video, duration);
+                }, delay);
+            } else {
+                video.pause();
+            }
+        },
+
+        _fadeInSound: function (video, duration) {
+            var self   = this,
+                delay  = duration / 10,
+                volume = video.volume + 0.09;
+
+            if (volume < 1) {
+                video.volume = volume;
+
+                setTimeout(function () {
+                    self._fadeInSound(video, duration);
+                }, delay);
+            }
+        },
+
+        _options: function (key, i) {
+            if (i === undefined) {
+                i = this.slide;
+            }
+
+            if (this.settings.slides[i][key] !== undefined) {
+                return this.settings.slides[i][key];
+            }
+
+            return this.settings[key];
+        },
+
+        _goto: function (nb) {
+            if (typeof this.settings.slides[nb] === 'undefined') {
+                nb = 0;
+            }
+
+            this.slide = nb;
+
+            var $slide,
+                $inner,
+                $video,
+                $slides       = this.$elmt.children('.vegas-slide'),
+                src           = this.settings.slides[nb].src,
+                videoSettings = this.settings.slides[nb].video,
+                delay         = this._options('delay'),
+                align         = this._options('align'),
+                valign        = this._options('valign'),
+                cover         = this._options('cover'),
+                color         = this._options('color') || this.$elmt.css('background-color'),
+                self          = this,
+                total         = $slides.length,
+                video,
+                img;
+
+            var transition         = this._options('transition'),
+                transitionDuration = this._options('transitionDuration'),
+                animation          = this._options('animation'),
+                animationDuration  = this._options('animationDuration');
+
+            if (this.settings.firstTransition && this.first) {
+                transition = this.settings.firstTransition || transition;
+            }
+
+            if (this.settings.firstTransitionDuration && this.first) {
+                transitionDuration = this.settings.firstTransitionDuration || transitionDuration;
+            }
+
+            if (this.first) {
+                this.first = false;
+            }
+
+            if (cover !== 'repeat') {
+                if (cover === true) {
+                    cover = 'cover';
+                } else if (cover === false) {
+                    cover = 'contain';
+                }
+            }
+
+            if (transition === 'random' || transition instanceof Array) {
+                if (transition instanceof Array) {
+                    transition = this._random(transition);
+                } else {
+                    transition = this._random(this.transitions);
+                }
+            }
+
+            if (animation === 'random' || animation instanceof Array) {
+                if (animation instanceof Array) {
+                    animation = this._random(animation);
+                } else {
+                    animation = this._random(this.animations);
+                }
+            }
+
+            if (transitionDuration === 'auto' || transitionDuration > delay) {
+                transitionDuration = delay;
+            }
+
+            if (animationDuration === 'auto') {
+                animationDuration = delay;
+            }
+
+            $slide = $('<div class="vegas-slide"></div>');
+
+            if (this.support.transition && transition) {
+                $slide.addClass('vegas-transition-' + transition);
+            }
+
+            // Video
+
+            if (this.support.video && videoSettings) {
+                if (videoSettings instanceof Array) {
+                    video = this._video(videoSettings);
+                } else {
+                    video = this._video(videoSettings.src);
+                }
+
+                video.loop  = videoSettings.loop !== undefined ? videoSettings.loop : true;
+                video.muted = videoSettings.mute !== undefined ? videoSettings.mute : true;
+
+                if (video.muted === false) {
+                    video.volume = 0;
+                    this._fadeInSound(video, transitionDuration);
+                } else {
+                    video.pause();
+                }
+
+                $video = $(video)
+                    .addClass('vegas-video')
+                    .css('background-color', color);
+
+                if (this.support.objectFit) {
+                    $video
+                        .css('object-position', align + ' ' + valign)
+                        .css('object-fit', cover)
+                        .css('width',  '100%')
+                        .css('height', '100%');
+                } else if (cover === 'contain') {
+                    $video
+                        .css('width',  '100%')
+                        .css('height', '100%');
+                }
+
+                $slide.append($video);
+
+            // Image
+
+            } else {
+                img = new Image();
+
+                $inner = $('<div class="vegas-slide-inner"></div>')
+                    .css('background-image',    'url("' + src + '")')
+                    .css('background-color',    color)
+                    .css('background-position', align + ' ' + valign);
+
+                if (cover === 'repeat') {
+                    $inner.css('background-repeat', 'repeat');
+                } else {
+                    $inner.css('background-size', cover);
+                }
+
+                if (this.support.transition && animation) {
+                    $inner
+                        .addClass('vegas-animation-' + animation)
+                        .css('animation-duration',  animationDuration + 'ms');
+                }
+
+                $slide.append($inner);
+            }
+
+            if (!this.support.transition) {
+                $slide.css('display', 'none');
+            }
+
+            if (total) {
+                $slides.eq(total - 1).after($slide);
+            } else {
+                this.$elmt.prepend($slide);
+            }
+
+            $slides
+                .css('transition', 'all 0ms')
+                .each(function () {
+                    this.className  = 'vegas-slide';
+
+                    if (this.tagName === 'VIDEO') {
+                        this.className += ' vegas-video';    
+                    }
+
+                    if (transition) {
+                        this.className += ' vegas-transition-' + transition;
+                        this.className += ' vegas-transition-' + transition + '-in';
+                    }
+                }
+            );
+
+            self._timer(false);
+
+            function go () {
+                self._timer(true);
+
+                setTimeout(function () {
+                    if (transition) {
+                        if (self.support.transition) {
+                            $slides
+                                .css('transition', 'all ' + transitionDuration + 'ms')
+                                .addClass('vegas-transition-' + transition + '-out');
+
+                            $slides.each(function () {
+                                var video = $slides.find('video').get(0);
+
+                                if (video) {
+                                    video.volume = 1;
+                                    self._fadeOutSound(video, transitionDuration);
+                                }
+                            });
+
+                            $slide
+                                .css('transition', 'all ' + transitionDuration + 'ms')
+                                .addClass('vegas-transition-' + transition + '-in');
+                        } else {
+                            $slide.fadeIn(transitionDuration);
+                        }
+                    }
+
+                    for (var i = 0; i < $slides.length - self.settings.slidesToKeep; i++) {
+                         $slides.eq(i).remove();
+                    }
+
+                    self.trigger('walk');
+                    self._slideShow();
+                }, 100);
+            }
+            if (video) {
+                if (video.readyState === 4) {
+                    video.currentTime = 0;
+                }
+
+                video.play();
+                go();
+            } else {
+                img.src = src;
+
+                if (img.complete) {
+                    go();
+                } else {
+                    img.onload = go;
+                }
+            }
+        },
+
+        _end: function () {
+            this.ended = true;
+            this._timer(false);
+            this.trigger('end');
+        },
+
+        shuffle: function () {
+            var temp,
+                rand;
+
+            for (var i = this.total - 1; i > 0; i--) {
+                rand = Math.floor(Math.random() * (i + 1));
+                temp = this.settings.slides[i];
+
+                this.settings.slides[i] = this.settings.slides[rand];
+                this.settings.slides[rand] = temp;
+            }
+        },
+
+        play: function () {
+            if (this.paused) {
+                this.paused = false;
+                this.next();
+                this.trigger('play');
+            }
+        },
+
+        pause: function () {
+            this._timer(false);
+            this.paused = true;
+            this.trigger('pause');
+        },
+
+        toggle: function () {
+            if (this.paused) {
+                this.play();
+            } else {
+                this.pause();
+            }
+        },
+
+        playing: function () {
+            return !this.paused && !this.noshow;
+        },
+
+        current: function (advanced) {
+            if (advanced) {
+                return {
+                    slide: this.slide,
+                    data:  this.settings.slides[this.slide]
+                };
+            }
+            return this.slide;
+        },
+
+        jump: function (nb) {
+            if (nb < 0 || nb > this.total - 1 || nb === this.slide) {
+                return;
+            }
+
+            this.slide = nb;
+            this._goto(this.slide);
+        },
+
+        next: function () {
+            this.slide++;
+
+            if (this.slide >= this.total) {
+                if (!this.settings.loop) {
+                    return this._end();
+                }
+
+                this.slide = 0;
+            }
+
+            this._goto(this.slide);
+        },
+
+        previous: function () {
+            this.slide--;
+
+            if (this.slide < 0) {
+                if (!this.settings.loop) {
+                    this.slide++;
+                    return;
+                } else {
+                    this.slide = this.total - 1;
+                }
+            }
+
+            this._goto(this.slide);
+        },
+
+        trigger: function (fn) {
+            var params = [];
+
+            if (fn === 'init') {
+                params = [ this.settings ];
+            } else {
+                params = [
+                    this.slide,
+                    this.settings.slides[this.slide]
+                ];
+            }
+
+            this.$elmt.trigger('vegas' + fn, params);
+
+            if (typeof this.settings[fn] === 'function') {
+                this.settings[fn].apply(this.$elmt, params);
+            }
+        },
+
+        options: function (key, value) {
+            var oldSlides = this.settings.slides.slice();
+
+            if (typeof key === 'object') {
+                this.settings = $.extend({}, defaults, $.vegas.defaults, key);
+            } else if (typeof key === 'string') {
+                if (value === undefined) {
+                    return this.settings[key];
+                }
+                this.settings[key] = value;
+            } else {
+                return this.settings;
+            }
+
+            // In case slides have changed
+            if (this.settings.slides !== oldSlides) {
+                this.total  = this.settings.slides.length;
+                this.noshow = this.total < 2;
+                this._preload();
+            }
+        },
+
+        destroy: function () {
+            clearTimeout(this.timeout);
+
+            this.$elmt.removeClass('vegas-container');
+            this.$elmt.find('> .vegas-slide').remove();
+            this.$elmt.find('> .vegas-wrapper').clone(true).children().appendTo(this.$elmt);
+            this.$elmt.find('> .vegas-wrapper').remove();
+
+            if (this.settings.timer) {
+                this.$timer.remove();
+            }
+
+            if (this.settings.overlay) {
+                this.$overlay.remove();
+            }
+
+            this.elmt._vegas = null;
+        }
+    };
+
+    $.fn.vegas = function(options) {
+        var args = arguments,
+            error = false,
+            returns;
+
+        if (options === undefined || typeof options === 'object') {
+            return this.each(function () {
+                if (!this._vegas) {
+                    this._vegas = new Vegas(this, options);
+                }
+            });
+        } else if (typeof options === 'string') {
+            this.each(function () {
+                var instance = this._vegas;
+
+                if (!instance) {
+                    throw new Error('No Vegas applied to this element.');
+                }
+
+                if (typeof instance[options] === 'function' && options[0] !== '_') {
+                    returns = instance[options].apply(instance, [].slice.call(args, 1));
+                } else {
+                    error = true;
+                }
+            });
+
+            if (error) {
+                throw new Error('No method "' + options + '" in Vegas.');
+            }
+
+            return returns !== undefined ? returns : this;
+        }
+    };
+
+    $.vegas = {};
+    $.vegas.defaults = defaults;
+
+    $.vegas.isVideoCompatible = function () {
+        return !/(Android|webOS|Phone|iPad|iPod|BlackBerry|Windows Phone)/i.test(navigator.userAgent);
+    };
+
+})(window.jQuery || window.Zepto);

@@ -15,8 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 	if( $imagenum > 0 && !empty($imgIDs) ){
     		for($i = 0;$i < $imagenum;$i++){
-			$image_attributes = wp_get_attachment_image_src( $image[$i], "thumbnail" );
-	        	echo "<div id='" . $image[$i] . "' class='thumbnail'><img id='" . $image[$i] . "' src='" . $image_attributes[0] . "'><span id='" . $image[$i] . "' class='vegas_remove'>X</span></div>"; //get image
+                        $image_attributes = wp_get_attachment_image_src( $image[$i], "thumbnail" );
+                        if ( !$image_attributes ) {
+                                $image_attributes[0]= 'https://ftek.se/wp-includes/images/media/video.png';
+                        }
+	        	echo "<div id='" . $image[$i] . "' class='thumbnail'><img title='".get_the_title($image[$i])."' id='" . $image[$i] . "' src='" . $image_attributes[0] . "'><span id='" . $image[$i] . "' class='vegas_remove'>X</span></div>"; //get image
     		}
 	} 
 ?> </ul></div>
