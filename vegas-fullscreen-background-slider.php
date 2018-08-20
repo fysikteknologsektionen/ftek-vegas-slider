@@ -7,7 +7,9 @@ Author: James Bruner
 Version: 2.2
 Author URI: http://jamesdbruner.com
 GitHub Plugin URI: Fysikteknologsektionen/vegas-fullscreen-background-slider
+*/
 
+/*
 Copyright 2014  James Bruner  (email : jamesdbruner@gmail.com)
 
 This program is free software; you can redistribute it and/or modify
