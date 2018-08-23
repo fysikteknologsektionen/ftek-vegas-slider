@@ -88,7 +88,6 @@
     overflow:hidden;
 }
 .vegas_remove{
-    visibility:hidden;
     border-bottom-left-radius:3px;
     border:2px;
     text-decoration:none;
@@ -108,10 +107,6 @@
 }
 #vegas-shortcode-generator h3, #vegas-parameter-explaination h3{
     cursor:auto!important;
-}
-.thumbnail.hover .vegas_remove,
-.thumbnail:hover .vegas_remove{
-    visibility:visible;
 }
 .thumbnail:hover{
     cursor:move;

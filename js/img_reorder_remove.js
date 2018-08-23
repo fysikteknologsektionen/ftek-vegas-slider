@@ -10,9 +10,6 @@ jQuery("#publish").click(function() {
     }).get();
     jQuery("#imgIDs").val(t);
 });
-jQuery("#thumbnails .thumbnail").click(function() {
-    jQuery(this).toggleClass("hover");
-});
 jQuery(".vegas_remove").on('click', function() {
     var e = jQuery(this).attr("id");
     jQuery("#" + e).hide();

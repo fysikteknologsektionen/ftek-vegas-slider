@@ -25,9 +25,12 @@ jQuery(document).ready(function(e) {
             });
             var s = "";
             for (var o = 0; o < n.length; o++) {
-                s += '<div id="' + r[o] + '" class="thumbnail"><img id="' + r[o] + '"src="' + n[o] + '"><span id="' + r[o] + '" class="vegas_remove">X</span></div>';
+                s += '<div id="' + r[o] + '" class="thumbnail"><img id="' + r[o] + '"src="' + n[o] + '"><span id="' + r[o] + '" class="vegas_remove">&times;</span></div>';
             }
             e("#thumbnails").append(s);
+            e(".vegas_remove").last().on('click', function() {
+                e("#" + e(this).attr("id")).hide().remove();
+            });
         });
         frame.open();
     });
