@@ -78,7 +78,9 @@ HEREDOC;
             $replacement .= "{ src:'".plugin_dir_url( __FILE__ )."../images/video_fallback.png', delay: ".(wp_get_attachment_metadata($image[$i])['length']*1000-50).",  video: {src:['".$video_attributes."'], loop:false, mute:true}},";
         } else {
             $image_attributes = wp_get_attachment_image_src( $image[$i], "full" );
-            $replacement .= "{ src:'" . $image_attributes[0] . "'},";
+            if (strlen($image_attributes[0])>0) {
+                $replacement .= "{ src:'" . $image_attributes[0] . "'},";
+            }
         }
     }
     $replacement .= <<<HEREDOC
