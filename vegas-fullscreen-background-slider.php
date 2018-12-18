@@ -41,7 +41,7 @@ class vegas{
     add_action( 'admin_enqueue_scripts', array( $this, 'media_uploader' ) );
     add_action( 'save_post', array( $this, 'vegas_meta_box_save' ));
     add_shortcode( 'vegas', array( $this, 'vegas' ) );
-    add_filter( 'plugin_action_links_'. plugin_basename( __FILE__ ), array( $this, 'add_help_link' ) );
+    //add_filter( 'plugin_action_links_'. plugin_basename( __FILE__ ), array( $this, 'add_help_link' ) );
     add_filter( 'post_updated_messages', array( $this, 'vegas_custom_messages' ) );
     register_activation_hook( __FILE__, array( __CLASS__, 'flush' ) );
     register_deactivation_hook( __FILE__, array( __CLASS__, 'flush' ) );
@@ -89,12 +89,12 @@ class vegas{
 	    echo $shortcode;
     }
 
-    //Add Help Link
+    /*Add Help Link
     public function add_help_link($links) {
 	    $settings_link = '<a href="http://wordpress.org/plugins/vegas-fullscreen-background-slider/installation/">Help</a>';
   	    array_push( $links, $settings_link );
   	    return $links;
-    } 
+    } */
 
     //Add Vegas Metaboxes
     public function vegas_metaboxes_add() {
