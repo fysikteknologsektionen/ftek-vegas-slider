@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
             $id = $p->ID;
         }
     }
+    $event_enabled = get_post_meta( $id, 'vegas-events-enabled', true );
     $atts = shortcode_atts(array(
         'id' => $id,
         'fade' => '2000',
@@ -42,17 +43,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
     $image = explode(",", $images);
 
-    // Add future event images if they have a 1366x768 thumbnail
-    $events = eo_get_events(array(
-        'event_start_after'=>'today',
-		'showpastevents'=>true,
-	));
-    foreach ($events as $event) {
-        $thumb_ID = get_post_thumbnail_id($event->ID);
-        $img_attr = wp_get_attachment_image_src($thumb_ID, array(1366, 768));
-        if ($img_attr[1]===1366 && $img_attr[2]===768) {
-                $image[] = $thumb_ID;
-        }
+    if ($events_enabled) {
+	    // Add future event images if they have a 1366x768 thumbnail
+	    $events = eo_get_events(array(
+		'event_start_after'=>'today',
+			'showpastevents'=>true,
+		));
+	    foreach ($events as $event) {
+		$thumb_ID = get_post_thumbnail_id($event->ID);
+		$img_attr = wp_get_attachment_image_src($thumb_ID, array(1366, 768));
+		if ($img_attr[1]===1366 && $img_attr[2]===768) {
+			$image[] = $thumb_ID;
+		}
+	    }
     }
 
     $imagenum = count($image);
