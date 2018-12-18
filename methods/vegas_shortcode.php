@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
             $id = $p->ID;
         }
     }
-    $event_enabled = get_post_meta( $id, 'vegas-events-enabled', true );
+    $events_enabled = get_post_meta( $id, 'vegas-events-enabled', true );
     $atts = shortcode_atts(array(
         'id' => $id,
         'fade' => '2000',
