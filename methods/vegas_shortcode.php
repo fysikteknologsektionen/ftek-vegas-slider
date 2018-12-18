@@ -41,6 +41,20 @@ if ( ! defined( 'ABSPATH' ) ) exit;
     }
 
     $image = explode(",", $images);
+
+    // Add future event images if they have a 1366x768 thumbnail
+    $events = eo_get_events(array(
+        'event_start_after'=>'today',
+		'showpastevents'=>true,
+	));
+    foreach ($events as $event) {
+        $thumb_ID = get_post_thumbnail_id($event->ID);
+        $img_attr = wp_get_attachment_image_src($thumb_ID, array(1366, 768));
+        if ($img_attr[1]===1366 && $img_attr[2]===768) {
+                $image[] = $thumb_ID;
+        }
+    }
+
     $imagenum = count($image);
     $replacement = '';
 
@@ -77,7 +91,7 @@ HEREDOC;
             $video_attributes = wp_get_attachment_url( $image[$i] );
             $replacement .= "{ src:'".plugin_dir_url( __FILE__ )."../images/video_fallback.png', delay: ".(wp_get_attachment_metadata($image[$i])['length']*1000-50).",  video: {src:['".$video_attributes."'], loop:false, mute:true}},";
         } else {
-            $image_attributes = wp_get_attachment_image_src( $image[$i], "full" );
+            $image_attributes = wp_get_attachment_image_src( $image[$i], array(1366, 768) );
             if (strlen($image_attributes[0])>0) {
                 $replacement .= "{ src:'" . $image_attributes[0] . "'},";
             }
