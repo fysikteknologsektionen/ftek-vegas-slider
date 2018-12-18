@@ -29,6 +29,18 @@ if ( isset( $_POST['vegas_selected_checkbox'] ) ) {
     add_post_meta($post_id, "vegas-enabled", $enabled, true) or update_post_meta( $post_id, "vegas-enabled", $enabled );
 }
 
+if ( isset( $_POST['vegas_events_checkbox'] ) ) {
+	$events_enabled = $_POST['vegas_events_checkbox'] == 'on' ? 1 : 0;
+	
+	if ( $_POST['vegas_events_checkbox'] == 'on' ) {
+		$posts = get_posts(['post_type' => 'vegas', 'numberposts' => -1,]);
+        foreach ($posts as $p) {
+            add_post_meta($p->ID, "vegas-events-enabled", 0, true) or update_post_meta( $p->ID, "vegas-events-enabled", 0 );
+        }
+    }
+    add_post_meta($post_id, "vegas-events-enabled", $enabled, true) or update_post_meta( $post_id, "vegas-events-enabled", $enabled );
+}
+
 if ( isset( $_POST['genShortcode'] ) ) {
     $genShortcode = sanitize_text_field( $_POST['genShortcode'] );
     add_post_meta($post_id, "genShortcode", $genShortcode, true) or update_post_meta( $post_id, "genShortcode", $genShortcode );
