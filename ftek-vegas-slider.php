@@ -3,8 +3,9 @@
 Plugin Name: Ftek Vegas Slideshow
 Description: Based on WP Vegas
 Author: johwin
-Version: 2.5
-GitHub Plugin URI: Fysikteknologsektionen/ftek-vegas-slider
+Version: 2.5.1
+GitHub Plugin URI: fysikteknologsektionen/ftek-vegas-slider
+Primary Branch: main
 */
 
 /*
